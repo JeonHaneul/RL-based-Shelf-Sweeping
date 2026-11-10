@@ -1,0 +1,24 @@
+import gymnasium as gym
+import os
+
+from . import agents
+
+gym.register(
+    id="Isaac-Sweep-Object-UR5e-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.joint_pos_env_cfg:UR5eShelfEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:UR5eSweepPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Isaac-Sweep-Object-UR5e-Random-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.joint_pos_random_sweep_env_cfg:UR5eSweepEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg_02:UR5eSweepPPORunnerCfg",
+    },
+)

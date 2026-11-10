@@ -1,0 +1,11 @@
+[
+  {"name": "UR5e with Robotiq", "path": "Robots/UR5e/UR5e_v4.usd", "variable": "SWEEP_ROBOT_USD", "mode": "both"},
+  {"name": "Fixed-direction shelf", "path": "speedrack/speedrack_shape.usd", "variable": "SWEEP_SHELF_FIXED_USD", "mode": "fixed"},
+  {"name": "Random-direction shelf", "path": "speedrack/speedrack.usd", "variable": "SWEEP_SHELF_RANDOM_USD", "mode": "random"},
+  {"name": "bottle_1", "path": "Bottle_6/Bottle_6.usd", "mode": "both"},
+  {"name": "cup_1", "path": "Collected_Cup_1/Cup_1.usd", "mode": "both"},
+  {"name": "cup_2", "path": "Collected_Cup_4/Cup_4.usd", "mode": "both"},
+  {"name": "mug_1", "path": "Collected_Mug_2/Mug_2.usd", "mode": "both"},
+  {"name": "mug_2", "path": "Collected_Mug_3/Mug_3.usd", "mode": "both"},
+  {"name": "can_1", "path": "Can_6/Can_6.usd", "mode": "both"}
+]

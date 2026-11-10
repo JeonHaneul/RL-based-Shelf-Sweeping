@@ -1,0 +1,128 @@
+# Copyright (c) 2022-2024, The Isaac Lab Project Developers.
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+"""Configuration for the Universal Robots.
+
+The following configuration parameters are available:
+
+* :obj:`UR5e_CFG`: UR5e with the experiment-specific Robotiq gripper asset.
+
+Reference: https://github.com/ros-industrial/universal_robot
+"""
+
+import isaaclab.sim as sim_utils
+from isaaclab_tasks.manager_based.manipulation.shelf.src.asset_paths import resolve_asset
+from isaaclab.actuators import ImplicitActuatorCfg
+from isaaclab.assets.articulation import ArticulationCfg
+
+# Configuration
+##
+
+
+UR5e_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=resolve_asset("Robots/UR5e/UR5e_v4.usd", "SWEEP_ROBOT_USD"),
+        rigid_props=sim_utils.RigidBodyPropertiesCfg(
+            disable_gravity=False,
+            max_depenetration_velocity=5.0,
+        ),
+        activate_contact_sensors=False,
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.79505),
+        rot=(0.0, 0.0, 0.0, 1.0),
+        joint_pos={
+            "shoulder_pan_joint": 0.0,  # -1.7540559 / -1.6
+            "shoulder_lift_joint": -2.2,  # -1.27409 / -1.9
+            "elbow_joint": 2.2,  # 1.3439 / 1.9
+            "wrist_1_joint": 0.0,  # 0.0
+            "wrist_2_joint": 1.57,  # 1.5708 / 1.57
+            "wrist_3_joint": 0.785,  # 1.5708 / 2.1
+            "finger_joint": 0.0,  # 0.0
+            "right_outer_knuckle_joint": 0.0,  # 0.0
+            "right_outer_finger_joint": 0.0,
+            "right_inner_finger_joint":0.0,
+            "right_inner_finger_knuckle_joint":0.0,
+            "left_outer_finger_joint":0.0,
+            "left_inner_finger_knuckle_joint":0.0,
+            "left_inner_finger_joint":0.0,
+
+        },
+        joint_vel={
+            "shoulder_pan_joint": 0.0,  # -1.7540559 / -1.6
+            "shoulder_lift_joint": 0.0,  # -1.27409 / -1.9
+            "elbow_joint": 0.0,  # 1.3439 / 1.9
+            "wrist_1_joint": 0.0,  # 0.0
+            "wrist_2_joint": 0.0,  # 1.5708 / 1.57
+            "wrist_3_joint": 0.0,  # 1.5708 / 2.1
+            "finger_joint": 0.0,  # 0.0
+            "right_outer_knuckle_joint": 0.0,  # 0.0
+            "right_outer_finger_joint": 0.0,
+            "right_inner_finger_joint":0.0,
+            "right_inner_finger_knuckle_joint":0.0,
+            "left_outer_finger_joint":0.0,
+            "left_inner_finger_knuckle_joint":0.0,
+            "left_inner_finger_joint":0.0,
+
+        },
+    ),
+    actuators={
+        "arm": ImplicitActuatorCfg(
+            joint_names_expr=[
+                "shoulder_pan_joint",
+                "shoulder_lift_joint",
+                "elbow_joint",
+                "wrist_1_joint",
+                "wrist_2_joint",
+                "wrist_3_joint",
+            ],
+            velocity_limit={
+                "shoulder_pan_joint": 3.14,
+                "shoulder_lift_joint": 3.14,
+                "elbow_joint": 3.14,
+                "wrist_1_joint":6.28,
+                "wrist_2_joint":6.28,
+                "wrist_3_joint":6.28,
+            },
+            effort_limit={
+                "shoulder_pan_joint": 150,
+                "shoulder_lift_joint": 150,
+                "elbow_joint": 150,
+                "wrist_1_joint":28,
+                "wrist_2_joint":28,
+                "wrist_3_joint":28,
+            },
+            stiffness={
+                "shoulder_pan_joint": 3328.7,
+                "shoulder_lift_joint": 4989.4, #600
+                "elbow_joint": 2394.2,
+                "wrist_1_joint":3500.2,
+                "wrist_2_joint":3174.8, #112.0
+                "wrist_3_joint":3032.4,
+            },
+            damping={ 
+                "shoulder_pan_joint": 368.8,
+                "shoulder_lift_joint": 561.2,
+                "elbow_joint": 274.1, #34.64101615,
+                "wrist_1_joint":396.2, 
+                "wrist_2_joint":363.1, #15.24
+                "wrist_3_joint":345.0,
+            },
+        ),
+        "gripper": ImplicitActuatorCfg(
+            joint_names_expr=["finger_joint","left_outer_finger_joint","left_inner_finger_knuckle_joint","left_inner_finger_joint", "right_outer_knuckle_joint", "right_outer_finger_joint", "right_inner_finger_joint", "right_inner_finger_knuckle_joint"],
+            effort_limit=200.0,
+            velocity_limit=2.0,
+            stiffness=2000,
+            damping=1000,
+        ),
+    },
+)
+
+UR5e_HIGH_PD_CFG = UR5e_CFG.copy()
+UR5e_HIGH_PD_CFG.spawn.rigid_props.disable_gravity = True
+UR5e_HIGH_PD_CFG.actuators["arm"].stiffness = 400.0
+UR5e_HIGH_PD_CFG.actuators["arm"].damping = 80.0
+
